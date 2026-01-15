@@ -1,0 +1,161 @@
+/**
+  |============================
+  | include css partials with
+  | default @import url()
+  |============================
+*/
+/* Common styles */
+@import url('./reset.css');
+@import url('./base.css');
+
+.form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px;
+}
+
+.form input {
+  width: 272px;
+  height: 40px;
+  border: solid 1px #4e75ff;
+  border-radius: 5px;
+  padding: 0;
+  padding-left: 10px;
+}
+
+.form input::placeholder {
+  color: rgba(1, 24, 4, 0.39);
+  /* padding-left: 10px; */
+}
+
+.form button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 10px;
+
+  border-radius: 8px;
+  padding: 8px 16px;
+  width: 91px;
+  height: 40px;
+
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: #fff;
+  background: #4e75ff;
+  border: none;
+}
+
+/* 1. Стилі для самого лоадера (відбувається під час завантаження даних*/
+.loader {
+  width: 48px;
+  height: 48px;
+  display: inline-block;
+  position: relative;
+  border: 2px solid #000000;
+  box-sizing: border-box;
+  animation: rotation 2s linear infinite;
+}
+
+.loader::after,
+.loader::before {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  border: 2px solid #ff3c00;
+  width: 38px;
+  height: 38px;
+  animation: rotationBack 1.5s linear infinite;
+  transform-origin: center center;
+}
+
+.loader::before {
+  width: 28px;
+  height: 28px;
+  border-color: #fff;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotationBack {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+/* 2. Той самий клас-перемикач, якого тобі бракувало */
+.is-hidden {
+  display: none;
+  /* Ця властивість просто ховає елемент */
+  /* або visibility: hidden; або opacity: 0; */
+}
+
+.load-galler {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.gallery a {
+}
+
+.gallery {
+  gap: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.gallery img {
+}
+
+.gallery-item {
+  width: 360px;
+  border: 1px solid #808080;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 10px 10px 5px -5px rgba(0, 0, 0, 0.35);
+}
+
+.inf-list {
+  display: flex;
+  gap: 15px;
+  padding: 10px;
+  justify-content: space-between;
+}
+
+.inf-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body {
+  padding-bottom: 30px;
+  padding-top: 10px;
+}
