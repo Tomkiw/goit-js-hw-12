@@ -84,15 +84,10 @@ btnLoadMore.addEventListener('click', async () => {
     const data = await getImagesByQuery(currentQuery, page);
     createGallery(data.hits);
 
-    // Плавний скрол
+ 
     const card = document.querySelector('.gallery-item');
-    const cardHeight = card.getBoundingClientRect().height;
-    window.scrollBy({
-      left: 0,
-      top: cardHeight * 2,
-      behavior: 'smooth',
-    });
-
+    card.getBoundingClientRect().height; // плавний скрол
+ 
     // Перевіряємо, чи досягли кінця колекції
     const totalPages = Math.ceil(data.totalHits / limitPagesItems);
     
