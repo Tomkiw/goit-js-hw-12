@@ -1,63 +1,65 @@
-import iziToast from 'izitoast'; // Імпорт бібліотеки iziToast для відображення повідомлень
-import 'izitoast/dist/css/iziToast.min.css'; // Імпорт стилів бібліотеки iziToast
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
 
-// Імпорт функції для запиту на сервер з файлу pixabay-api.js
 import { getImagesByQuery } from './js/pixabay-api.js';
-// Імпорт функцій для роботи з інтерфейсом (DOM) з файлу render-functions.js
 import {
   createGallery,
   clearGallery,
   showLoader,
   hideLoader,
+  showBtnLoadMore,
+  hideBtnLoadMore,
 } from './js/render-functions.js';
 
-const form = document.querySelector('.form'); // Отримання елемента форми з DOM
+const form = document.querySelector('.form');
+let page = 1;
+let currentQuery = '';
+let hitsCount = 0;
+const limitPagesItems = 15;
 
-// Додавання слухача події 'submit' на форму
-form.addEventListener('submit', event => {
-  event.preventDefault(); // Скасування перезавантаження сторінки при відправці форми
+form.addEventListener('submit', async event => {
+  event.preventDefault();
 
-  const input = event.target.querySelector('input'); // Пошук поля вводу всередині форми
-  const query = input.value.trim(); // Отримання введеного тексту без зайвих пробілів
+  const input = event.target.querySelector('input');
+  const query = input.value.trim();
 
-  // Перевірка: якщо поле порожнє, виводимо попередження
   if (!query) {
     iziToast.warning({
-      title: 'Warning', // Заголовок попередження
-      message: 'Please enter a search query!', // Текст попередження
+      title: 'Warning',
+      message: 'Please enter a search query!',
     });
-    return; // Перериваємо виконання функції
+    return;
   }
-  
-  // 1. Підготовка інтерфейсу: очищення галереї та показ лоадера
+
   clearGallery();
   showLoader();
+  hideBtnLoadMore();
+  page = 1;
 
-  // 2. Виконання запиту на сервер за введеним словом
-  getImagesByQuery(query)
-    .then(data => { // Успішна відповідь від сервера
-      // Перевірка: якщо масив зображень порожній
-      if (data.hits.length === 0) {
-        iziToast.error({
-          title: 'Error', // Заголовок помилки
-          message:
-            'Sorry, there are no images matching your search query. Please try again!', // Текст помилки
-          position: 'topRight', // Позиція повідомлення
-        });
-        return; // Вихід, якщо нічого не знайдено
-      }
-      // Якщо зображення є — викликаємо функцію рендеру
-      createGallery(data.hits); 
-    })
-    .catch(error => { // Обробка помилки запиту
-      console.error(error); // Вивід помилки в консоль
+  try {
+    const data = await getImagesByQuery(query, page);
+
+    if (data.hits.length === 0) {
+      btnLoadMore.classList.add('is-hidden');
       iziToast.error({
-        message: 'Something went wrong! Please try again later.', // Повідомлення для користувача
-        position: 'topRight', // Розташування повідомлення
+        title: 'Error',
+        message:
+          'Sorry, there are no images matching your search query. Please try again!',
+        position: 'topRight',
       });
-    })
-    .finally(() => { // Виконується завжди (успіх чи помилка)
-      hideLoader(); // Ховаємо лоадер
-      form.reset(); // Очищуємо форму
+      return;
+    }
+
+    createGallery(data.hits);
+ 
+  } catch (error) {
+    console.error(error);
+    iziToast.error({
+      message: 'Something went wrong! Please try again later.',
+      position: 'topRight',
     });
+  } finally {
+    hideLoader();
+    form.reset();
+  }
 });

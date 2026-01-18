@@ -1,9 +1,10 @@
 import axios from 'axios'; // Імпорт бібліотеки axios для виконання HTTP-запитів
 
 // Експортуємо функцію, яка приймає пошуковий запит (query)
-export function getImagesByQuery(query) {
+export async function getImagesByQuery(query, page) {
   const API_KEY = '54182222-bc9f62244d35838f397753c37'; // Ваш персональний ключ API Pixabay
   const BASE_URL = 'https://pixabay.com/api/'; // Базова адреса API Pixabay
+  
 
   // Налаштування параметрів запиту (query parameters)
   // Ці параметри будуть додані до URL (наприклад: ?key=...&q=cat&image_type=photo...)
@@ -14,16 +15,14 @@ export function getImagesByQuery(query) {
       image_type: 'photo', // Шукаємо тільки фотографії
       orientation: 'horizontal', // Орієнтація зображення - горизонтальна
       safesearch: true, // Увімкнення безпечного пошуку (фільтрація контенту 18+)
-      per_page: 9, // Кількість зображень, що повертаються за один запит
+      page: page, // Номер сторінки
+      per_page: 15, // Кількість зображень, що повертаються за один запит
     },
   };
 
   // Виконуємо GET-запит на сервер, передаючи базову URL та об'єкт налаштувань
-  return axios.get(BASE_URL, searchParams).then(response => {
-    // Якщо запит успішний, повертаємо дані відповіді (response.data)
-    // response.data містить масив зображень (hits) та загальну кількість (totalHits)
+  const response = await axios.get(BASE_URL, searchParams)
     return response.data;
-  });
 }
 
-// console.log(getImagesByQuery("dog"));
+ 

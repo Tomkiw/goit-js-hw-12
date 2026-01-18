@@ -12,7 +12,7 @@ let lightbox = new SimpleLightbox('.gallery a', {
 // Отримуємо посилання на DOM-елементи
 const galleryContainer = document.querySelector('.gallery'); // Контейнер (ul), куди будемо додавати картинки
 const loader = document.querySelector('.loader'); // Елемент лоадера (індикатор завантаження)
-
+const btnLoadMore = document.querySelector('.btn-load-more'); // Кнопка "Load More"
 // Функція для створення розмітки галереї
 export function createGallery(images) {
   // Створюємо HTML-рядок з карток зображень, використовуючи метод map
@@ -80,3 +80,13 @@ export const hideLoader = () => {
   // Додаємо клас 'is-hidden', щоб сховати лоадер
   loader.classList.add('is-hidden');
 };
+
+//Function visibilite btn load more
+export const  showBtnLoadMore = () => {
+    btnLoadMore.classList.remove('is-hidden');
+};
+export const  hideBtnLoadMore = () => {
+    btnLoadMore.classList.add('is-hidden');
+};
+
+
