@@ -57,11 +57,15 @@ form.addEventListener('submit', async event => {
       showBtnLoadMore();
     } else {
       hideBtnLoadMore();
+      iziToast.error({
+        title: 'Error',
+        message:
+          "We're sorry, but you've reached the end of search results.",
+        position: 'topRight',
+      });
     }
 
     page += 1;
-
-
   } catch (error) {
     console.error(error);
     iziToast.error({
@@ -84,13 +88,10 @@ btnLoadMore.addEventListener('click', async () => {
     const data = await getImagesByQuery(currentQuery, page);
     createGallery(data.hits);
 
- 
-    const card = document.querySelector('.gallery-item');
-    card.getBoundingClientRect().height; // плавний скрол
- 
+    hideLoader(); // Приховуємо лоадер перед перевіркою пагінації та скролом
     // Перевіряємо, чи досягли кінця колекції
     const totalPages = Math.ceil(data.totalHits / limitPagesItems);
-    
+
     if (page >= totalPages) {
       hideBtnLoadMore();
       iziToast.info({
@@ -101,6 +102,15 @@ btnLoadMore.addEventListener('click', async () => {
       showBtnLoadMore();
       page += 1; // Збільшуємо лічильник сторінки тільки якщо є ще що вантажити
     }
+
+    const card = document.querySelector('.gallery-item');
+    const cardHeight = card.getBoundingClientRect().height;
+    setTimeout(() => {
+      window.scrollBy({
+        top: cardHeight * 2,
+        behavior: 'smooth',
+      });
+    }, 500);
   } catch (error) {
     console.error(error);
     iziToast.error({ position: 'topRight', message: 'Something went wrong!' });

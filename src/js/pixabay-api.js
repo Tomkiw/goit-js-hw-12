@@ -5,7 +5,6 @@ export async function getImagesByQuery(query, page) {
   const API_KEY = '54182222-bc9f62244d35838f397753c37'; // Ваш персональний ключ API Pixabay
   const BASE_URL = 'https://pixabay.com/api/'; // Базова адреса API Pixabay
   
-
   // Налаштування параметрів запиту (query parameters)
   // Ці параметри будуть додані до URL (наприклад: ?key=...&q=cat&image_type=photo...)
   const searchParams = {
